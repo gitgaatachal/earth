@@ -1,0 +1,35 @@
+---
+- block:
+    - name: Install required system packages
+      action: apt pkg={{item}} state=installed update_cache=yes
+      with_items:
+        - python-dev
+        - python-setuptools
+        - build-essential
+        - gfortran
+        - swig
+        - libatlas-dev
+        - liblapack-dev
+        - libxml2-dev
+        - libxslt-dev
+        - zlib1g-dev
+
+    - name: Cloning project files from git
+      git: >
+        repo={{git_repo}}
+        update=no
+        dest=/tmp/pearth
+        version=master
+        accept_hostkeys=yes
+
+    - name: Copy projectearth code
+      command: cp -R /tmp/pearth/code/projectearth ~/projectearth
+
+    - name: Install libraries required for running projet
+      action: pip name={{item}} state=present
+      with_items:
+        - virtualenv
+
+    - name: Installing project requirements
+      become: no
+      pip: virtualenv={{ app_dir }} requirements={{ app_dir }}/requirements.txt 
