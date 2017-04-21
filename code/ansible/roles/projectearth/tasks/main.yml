@@ -20,7 +20,7 @@
         update=no
         dest=/tmp/pearth
         version=master
-        accept_hostkeys=yes
+        accept_hostkey=yes
 
     - name: Copy projectearth code
       command: cp -R /tmp/pearth/code/projectearth ~/projectearth
